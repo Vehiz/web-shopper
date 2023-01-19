@@ -21,6 +21,13 @@ const reducer = (state, action) => {
   }
 };
 
+// const REACT_BACKEND_URL = process.env.REACT_BACKEND_URL
+// console.log('hug me', REACT_BACKEND_URL)
+// if(REACT_BACKEND_URL === undefined) {
+//   return;
+// }
+
+
 function HomeScreen() {
   const [{ loading, error, products }, dispatch] = useReducer(reducer, {
     products: [],
@@ -29,11 +36,14 @@ function HomeScreen() {
   });
   // const [products, setProducts] = useState([]);
   useEffect(() => {
+    console.log('bug')
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const result = await axios.get("/api/products");
-        dispatch({ type: "FETCH_SUCCESS", payload: result.data });
+        const result = await axios.get(`http://localhost:5000/api/products`);
+        const {data} = await result
+        console.log(data)
+        dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
         dispatch({ type: "FETCH_FAIL", payload: err.message });
       }
